@@ -1,0 +1,42 @@
+name: projecttracker
+
+# Copy .env.example to .env and fill it in before `docker compose up`.
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?set MYSQL_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: project_tracker_db
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  api:
+    build: ./api
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__DefaultConnection: Server=mysql;Database=project_tracker_db;User=root;Password=${MYSQL_ROOT_PASSWORD}
+      Database__AutoMigrate: "true"
+      Https__Redirect: "false"
+      JwtSettings__Secret: ${JWT_SECRET:?set JWT_SECRET in .env (32+ characters)}
+      JwtSettings__Issuer: ProjectTracker
+      JwtSettings__Audience: ProjectTrackerUsers
+      HASHIDS_SALT: ${HASHIDS_SALT:?set HASHIDS_SALT in .env}
+      Cors__Origins: ${CORS_ORIGINS:-http://localhost:3002}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@example.com}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:?set SEED_ADMIN_PASSWORD in .env}
+      SEED_SAMPLE_DATA: ${SEED_SAMPLE_DATA:-true}
+    ports:
+      - "${API_PORT:-5104}:8080"
+
+volumes:
+  dbdata:

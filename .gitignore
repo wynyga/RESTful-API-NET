@@ -483,3 +483,11 @@ $RECYCLE.BIN/
 
 # Environment variables
 .env
+
+# node / next
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
