@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  --bg: #f4f6f9;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --ink: #14171c;
+  --muted: #5d6571;
+  --line: #dfe3ea;
+  --accent: #2f6fdb;
+  --accent-ink: #ffffff;
+  --accent-soft: #e6eefc;
+  --danger: #c22f2f;
+  --danger-soft: #fbeaea;
+  --warn: #8a5a00;
+  --warn-soft: #fdf1d8;
+  /* Chart marks. Status hues are fixed and always paired with an icon and a label. */
+  --c-progress: #2f6fdb;
+  --c-done: #0ca30c;
+  --c-late: #d03b3b;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0f1217;
+  --surface: #171b22;
+  --surface-2: #1c212a;
+  --ink: #e8ebf0;
+  --muted: #98a1ae;
+  --line: #2a303a;
+  --accent: #5b8aea;
+  --accent-ink: #0b1220;
+  --accent-soft: #18233b;
+  --danger: #f08080;
+  --danger-soft: #3a1c1f;
+  --warn: #f2b765;
+  --warn-soft: #37290f;
+  --c-progress: #5b8aea;
+  --c-done: #0ca30c;
+  --c-late: #d03b3b;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-c-progress: var(--c-progress);
+  --color-c-done: var(--c-done);
+  --color-c-late: var(--c-late);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+dialog::backdrop {
+  background: rgb(8 10 14 / 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
